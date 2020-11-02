@@ -1,0 +1,25 @@
+{
+  "name": "disgit",
+  "version": "1.0.0",
+  "description": "Github-Discord integration",
+  "main": "main.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SanpuiRonak/disgit.git"
+  },
+  "author": "Ronak Sanpui,Debarsi Sadhukan,Sandip Maity",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SanpuiRonak/disgit/issues"
+  },
+  "homepage": "https://github.com/SanpuiRonak/disgit#readme",
+  "dependencies": {
+    "discord.js": "^12.3.1",
+    "dotenv": "^8.2.0",
+    "node-fetch": "^2.6.1"
+  }
+}
