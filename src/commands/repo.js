@@ -2,7 +2,7 @@ const fetch = require("node-fetch");
 
 const deb = require("debug")("Repo Debug");
 
-function execute(msg, args) {
+async function execute(msg, args) {
   if (args.length == 0) {
     msg.reply("Will list current repo");
   }
@@ -17,10 +17,10 @@ function execute(msg, args) {
         break;
       }
       const api = generateApi(args[1]);
-      let res = apiValdate(api);
+      let res = await apiValdate(api);
       console.log(res);
 
-      if (apiValdate(api) === false) {
+      if (res === false) {
         msg.reply(" the link seems to be broken💔");
         // break;
       } else {
@@ -46,15 +46,14 @@ function validate(link) {
   return linkValidater.test(link);
 }
 
-function apiValdate(api) {
+async function apiValdate(api) {
   // deb(api);
-  fetch(api)
-    .then((res) => res.status)
-    .then((status) => {
-      deb(status);
-      if (status === 200) return true;
-      else return false;
-    });
+  let result = await fetch(api);
+  if (result.status === 200) {
+    return true;
+  } else {
+    return false;
+  }
 }
 
 function generateApi(link) {
