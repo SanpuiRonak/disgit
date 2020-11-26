@@ -1,7 +1,7 @@
 require("dotenv").config();
 const mongoose = require("mongoose");
 const deb = require("debug")("Database Log");
-const { repoSchema } = require("./database/schema/repo");
+const { repoSchema } = require("./schema/repo");
 const connectionString = process.env.MONGO_STRING;
 // deb(connectionString);
 
@@ -21,4 +21,4 @@ const guildSchema = new mongoose.Schema({
 
 const Guild = mongoose.model("Guild", guildSchema);
 
-module.exports = Guild;
+module.exports = { Guild };

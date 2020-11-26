@@ -1,6 +1,6 @@
 const fetch = require("node-fetch");
-
 const deb = require("debug")("Repo Debug");
+const { Guild } = require("../database/db");
 
 async function execute(msg, args) {
   if (args.length == 0) {
