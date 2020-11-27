@@ -21,4 +21,4 @@ const guildSchema = new mongoose.Schema({
 
 const Guild = mongoose.model("Guild", guildSchema);
 
-module.exports = { Guild };
+module.exports = { Guild, deb };

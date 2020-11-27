@@ -1,6 +1,6 @@
 const fetch = require("node-fetch");
 const deb = require("debug")("Repo Debug");
-const { Guild } = require("../database/db");
+const { addRepo } = require("../database/api/addRepo");
 
 async function execute(msg, args) {
   if (args.length == 0) {
@@ -22,9 +22,21 @@ async function execute(msg, args) {
 
       if (res === false) {
         msg.reply(" the link seems to be broken💔");
+        deb(msg);
         // break;
       } else {
-        msg.reply("Adding");
+        try {
+          // deb(m);
+          addRepo({
+            guildId: msg.guild.id,
+            repoURL: api,
+            channelId: msg.channel.id,
+          });
+          msg.reply(" Repo Added");
+        } catch (error) {
+          deb(error);
+          msg.reply(" A repo is being tracked already");
+        }
       }
       break;
     case "remove":

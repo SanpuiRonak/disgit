@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const commitSchema = new mongoose.Schema({
   channelId: Number,
-  apiUrl: String,
+  // apiUrl: String,
   commitCount: Number,
 });
 
