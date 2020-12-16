@@ -1,10 +1,17 @@
 const fetch = require("node-fetch");
 const deb = require("debug")("Repo Debug");
-const { addRepo } = require("../database/api/addRepo");
+const databaseApi = require("../database/api");
 
 async function execute(msg, args) {
   if (args.length == 0) {
-    msg.reply("Will list current repo");
+    try {
+      let res = await databaseApi.getRepo(msg.guild.id);
+      deb(res);
+      msg.reply(`Trackin ${res.repo.repoName}`);
+    } catch (err) {
+      deb(err);
+      msg.reply(`Currently not tracking any repo`);
+    }
   }
   switch (args[0]) {
     case "track":
@@ -23,34 +30,44 @@ async function execute(msg, args) {
       if (res === false) {
         msg.reply(" the link seems to be broken💔");
         deb(msg);
-        // break;
       } else {
+        let hadExcpetion = false;
         try {
           // deb(m);
-          addRepo({
+          databaseApi.addRepo({
             guildId: msg.guild.id,
             repoURL: api,
             channelId: msg.channel.id,
           });
-          msg.reply(" Repo Added");
         } catch (error) {
-          deb(error);
+          deb("Inside error", err);
           msg.reply(" A repo is being tracked already");
+          hadExcpetion = true;
+        }
+        if (!hadExcpetion) {
+          msg.reply(" Repo Added");
         }
       }
       break;
+
     case "remove":
-      if (args.length <= 1) {
-        msg.reply("Link Pliz 😶");
-        break;
+      let hadExcpetion = false;
+      try {
+        databaseApi.removeRepo({
+          guildId: msg.guild.id,
+        });
+      } catch (err) {
+        msg.reply("You ar not tracking any repo!");
+        deb(err);
       }
-
-      msg.reply("Remove Link");
-      break;
-
-    default:
+      if (!hadExcpetion) {
+        msg.reply(`Removed repo`);
+      }
       break;
   }
+
+  //   msg.reply("Remove Link");
+  //   // break;
 }
 
 function validate(link) {
