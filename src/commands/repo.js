@@ -34,13 +34,13 @@ async function execute(msg, args) {
         let hadExcpetion = false;
         try {
           // deb(m);
-          databaseApi.addRepo({
+          await databaseApi.addRepo({
             guildId: msg.guild.id,
             repoURL: api,
             channelId: msg.channel.id,
           });
         } catch (error) {
-          deb("Inside error", err);
+          deb(error);
           msg.reply(" A repo is being tracked already");
           hadExcpetion = true;
         }
@@ -53,12 +53,13 @@ async function execute(msg, args) {
     case "remove":
       let hadExcpetion = false;
       try {
-        databaseApi.removeRepo({
+        await databaseApi.removeRepo({
           guildId: msg.guild.id,
         });
       } catch (err) {
-        msg.reply("You ar not tracking any repo!");
+        msg.reply("You are not tracking any repo!");
         deb(err);
+        hadExcpetion = true;
       }
       if (!hadExcpetion) {
         msg.reply(`Removed repo`);

@@ -5,6 +5,7 @@ async function newGuild({ guildId, repoURL, channelId }) {
   let repoName = "Lorem";
   const guild = new Guild({
     guildId: guildId,
+    repoCount: 1,
     repo: {
       repoName: repoName,
       repoURL: repoURL,
@@ -33,7 +34,7 @@ async function getRepo(guildId) {
   let res = await Guild.findOne({ guildId: guildId });
 
   if (!res) {
-    return new Error("Repo doesn't exsist");
+    throw new Error("Repo doesn't exsist");
   } else {
     return res;
   }
@@ -44,7 +45,7 @@ async function removeRepo({ guildId }) {
   let res = await Guild.findOne({ guildId: guildId });
   if (!res) {
     deb("Remove repo if");
-    return new Error("Repo doesn't exsist");
+    throw new Error("Repo doesn't exsist");
   } else {
     await Guild.findOneAndDelete(guildId);
     deb("Removed");
