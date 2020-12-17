@@ -6,7 +6,7 @@ async function execute(msg, args) {
   if (args.length == 0) {
     try {
       let res = await databaseApi.getRepo(msg.guild.id);
-      deb(res);
+
       msg.reply(`Trackin ${res.repo.repoName}`);
     } catch (err) {
       deb(err);
@@ -29,11 +29,9 @@ async function execute(msg, args) {
 
       if (res === false) {
         msg.reply(" the link seems to be broken💔");
-        deb(msg);
       } else {
         let hadExcpetion = false;
         try {
-          // deb(m);
           await databaseApi.addRepo({
             guildId: msg.guild.id,
             repoURL: api,
@@ -66,9 +64,6 @@ async function execute(msg, args) {
       }
       break;
   }
-
-  //   msg.reply("Remove Link");
-  //   // break;
 }
 
 function validate(link) {
@@ -77,7 +72,7 @@ function validate(link) {
 }
 
 async function apiValdate(api) {
-  // deb(api);
+  deb(api);
   let result = await fetch(api);
   if (result.status === 200) {
     return true;
