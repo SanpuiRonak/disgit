@@ -12,9 +12,8 @@ async function newGuild({ guildId, repoURL, channelId }) {
     repo: {
       repoName: repoName,
       repoURL: repoURL,
-      commit: {
-        channelId: channelId,
-        commitCount: 0,
+      issue: {
+        //TODO fetch issues
       },
     },
   });
