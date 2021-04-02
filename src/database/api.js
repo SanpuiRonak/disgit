@@ -2,7 +2,10 @@ const { Guild, deb } = require("./db");
 
 async function newGuild({ guildId, repoURL, channelId }) {
   //Scaffholding vaules
-  let repoName = "Lorem";
+  let secondLastIndex = repoURL.lastIndexOf("/", repoURL.lastIndexOf("/") - 1);
+
+  let repoName = repoURL.substr(secondLastIndex + 1);
+
   const guild = new Guild({
     guildId: guildId,
     repoCount: 1,
@@ -15,6 +18,7 @@ async function newGuild({ guildId, repoURL, channelId }) {
       },
     },
   });
+
   await guild.save();
 }
 
