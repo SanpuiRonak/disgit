@@ -39,4 +39,6 @@ client.once("ready", () => {
   logAct(`Logged in as ${client.user.tag}!`);
 });
 
+//TODO setInterval
+
 client.login(token);
