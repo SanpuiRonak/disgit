@@ -1,6 +1,7 @@
 require("dotenv").config();
 const Discord = require("discord.js");
 const fs = require("fs");
+const dbApi = require("./database/api");
 
 const logAct = require("debug")("Main.js Activity");
 const token = process.env.TOKEN;
@@ -41,4 +42,14 @@ client.once("ready", () => {
 
 //TODO setInterval
 
+function sendEmbed(exampleEmbed) {
+  console.log("msg pathachi");
+  const channel = client.channels.cache.get(dbApi.getIssueChannel());
+  channel.send(exampleEmbed);
+}
+
 client.login(token);
+
+// console.log(client);
+
+module.exports = { sendEmbed };

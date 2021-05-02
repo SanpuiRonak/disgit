@@ -1,5 +1,7 @@
 const Discord = require("discord.js");
 
+const { sendEmbed } = require("../main");
+const { hello } = require("../sosta");
 function sendIssueNotify(issueObj) {
   const exampleEmbed = new Discord.MessageEmbed()
     .setColor("#3d803d")
@@ -22,8 +24,8 @@ function sendIssueNotify(issueObj) {
   //     value: `⌚ ${args.commit.author.date.slice(11, 19)}`,
   //   }
   // );
-
-  message.channel.send(exampleEmbed);
+  // sendEmbed(exampleEmbed);
+  hello();
 }
 
 module.exports = { sendIssueNotify };
