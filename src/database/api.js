@@ -12,11 +12,7 @@ async function newGuild({ guildId, repoURL, channelId }) {
     repo: {
       repoName: repoName,
       repoURL: repoURL,
-      issue: {
-        latestOpen: 0,
-        latestClosed: 0,
-        issueChanel: channelId,
-      },
+      issueChannel: channelId,
     },
   });
 

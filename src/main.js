@@ -2,6 +2,7 @@ require("dotenv").config();
 const Discord = require("discord.js");
 const fs = require("fs");
 const dbApi = require("./database/api");
+const eventHandler = require("./eventHandler");
 
 const logAct = require("debug")("Main.js Activity");
 const token = process.env.TOKEN;
@@ -40,7 +41,7 @@ client.once("ready", () => {
   logAct(`Logged in as ${client.user.tag}!`);
 });
 
-//TODO setInterval
+setInterval(eventHandler.getIssues, 5000);
 
 function sendEmbed(exampleEmbed) {
   console.log("msg pathachi");
@@ -49,7 +50,3 @@ function sendEmbed(exampleEmbed) {
 }
 
 client.login(token);
-
-// console.log(client);
-
-module.exports = { sendEmbed };

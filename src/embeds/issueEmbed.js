@@ -1,9 +1,9 @@
 const Discord = require("discord.js");
 
 const { sendEmbed } = require("../main");
-const { hello } = require("../sosta");
-function sendIssueNotify(issueObj) {
-  const exampleEmbed = new Discord.MessageEmbed()
+
+function getEmbed(issueObj) {
+  const embed = new Discord.MessageEmbed()
     .setColor("#3d803d")
     .setTitle(`${issueObj.title}`) // COMMIT MESSAGE
     .setURL(`${issueObj.html_url}`) // URL OF COMMIT
@@ -25,7 +25,7 @@ function sendIssueNotify(issueObj) {
   //   }
   // );
   // sendEmbed(exampleEmbed);
-  hello();
+  return embed;
 }
 
-module.exports = { sendIssueNotify };
+module.exports = { getEmbed };
