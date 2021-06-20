@@ -18,7 +18,7 @@ async function newRepo({ guildId, repoURL, channelId }) {
 
 async function newGuild({ guildId, channelId }) {
   const guild = {
-    guildId: guildId,
+    guildID: guildId,
     issueChannelID: channelId,
     PRChannelID: channelId,
   };
@@ -30,8 +30,15 @@ async function addGuild({ guildId, repoURL, channelId }) {
 
   if (!repo) {
     //create a new repo
-    repo = newRepo({ guildId, repoURL, channelId });
+    newRepo({ guildId, repoURL, channelId });
   } else {
+    if (
+      repo.guilds.find((guild) => {
+        guildID == guild.guildId;
+      })
+    ) {
+      throw new Error("Repo already exists");
+    }
     const guild = await newGuild({ guildId, channelId });
 
     await Repo.updateOne({ repoURL: repoURL }, { $push: { guilds: guild } });

@@ -39,7 +39,7 @@ async function execute(msg, args) {
           });
         } catch (error) {
           deb(error);
-          msg.reply(" A repo is being tracked already");
+          msg.reply(" This repo is being tracked already");
           hadExcpetion = true;
         }
         if (!hadExcpetion) {
