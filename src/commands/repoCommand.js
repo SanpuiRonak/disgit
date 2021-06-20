@@ -49,18 +49,25 @@ async function execute(msg, args) {
       break;
 
     case "remove":
-      let hadExcpetion = false;
-      try {
-        await databaseApi.removeRepo({
-          guildId: msg.guild.id,
-        });
-      } catch (err) {
-        msg.reply("You are not tracking any repo!");
-        deb(err);
-        hadExcpetion = true;
-      }
-      if (!hadExcpetion) {
-        msg.reply(`Removed repo`);
+      if (args.length <= 1) {
+        msg.reply("Which one should i remove? link please");
+        break;
+      } else {
+        let hadExcpetion = false;
+        let api = generateApi(args[1]);
+        try {
+          await databaseApi.removeGuild({
+            repoURL: api,
+            guildID: msg.guild.id,
+          });
+        } catch (err) {
+          msg.reply("There is no such repo!");
+          deb(err);
+          hadExcpetion = true;
+        }
+        if (!hadExcpetion) {
+          msg.reply(`Removed repo`);
+        }
       }
       break;
   }
