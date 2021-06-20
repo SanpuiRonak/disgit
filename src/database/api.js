@@ -81,14 +81,19 @@ async function removeGuild({ repoURL, guildID }) {
   }
 }
 
-async function getIssueChannel({ guildId }) {
-  let res = await Guild.findOne({ guildId: guildId });
+async function getRepoList() {
+  let res = await Repo.find({});
+  return res;
+}
+
+async function getRepo(repoURL) {
+  let res = await Repo.findOne({ repoURL: repoURL });
+
   if (!res) {
     throw new Error("Repo doesn't exsist");
   } else {
-    const guild = await Guild.findOneAndDelete(guildId);
-    return guild.issue.issueChanel;
+    return res;
   }
 }
 
-module.exports = { addGuild, getRepo, removeGuild, getIssueChannel };
+module.exports = { addGuild, getRepo, getRepoList, removeGuild };
