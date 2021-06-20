@@ -1,38 +1,45 @@
-const { Guild, deb } = require("./db");
+const { Repo, deb } = require("./db");
 
-async function newGuild({ guildId, repoURL, channelId }) {
-  //Scaffholding vaules
+async function newRepo({ guildId, repoURL, channelId }) {
   let secondLastIndex = repoURL.lastIndexOf("/", repoURL.lastIndexOf("/") - 1);
 
   let repoName = repoURL.substr(secondLastIndex + 1);
 
-  const guild = new Guild({
-    guildId: guildId,
-    repoCount: 1,
-    repo: {
-      repoName: repoName,
-      repoURL: repoURL,
-      issueChannel: channelId,
-    },
+  const guild = await newGuild({ guildId, channelId });
+  const repo = new Repo({
+    repoName: repoName,
+    repoURL: repoURL,
+    guilds: [guild],
   });
 
-  await guild.save();
+  await repo.save();
+  return repo;
 }
 
-async function addRepo({ guildId, repoURL, channelId }) {
-  let res = await Guild.findOne({ guildId: guildId });
+async function newGuild({ guildId, channelId }) {
+  const guild = {
+    guildId: guildId,
+    issueChannelID: channelId,
+    PRChannelID: channelId,
+  };
+  return guild;
+}
 
-  if (!res) {
-    newGuild({ guildId, repoURL, channelId });
+async function addGuild({ guildId, repoURL, channelId }) {
+  let repo = await Repo.findOne({ repoURL: repoURL });
+
+  if (!repo) {
+    //create a new repo
+    repo = newRepo({ guildId, repoURL, channelId });
   } else {
-    deb("Throwed error");
+    const guild = await newGuild({ guildId, channelId });
 
-    throw new Error("Repo exsist");
+    await Repo.updateOne({ repoURL: repoURL }, { $push: { guilds: guild } });
   }
 }
 
-async function getRepo(guildId) {
-  let res = await Guild.findOne({ guildId: guildId });
+async function getRepo(repoURL) {
+  let res = await Guild.findOne({ repoURL: repoURL });
 
   if (!res) {
     throw new Error("Repo doesn't exsist");
@@ -63,4 +70,4 @@ async function getIssueChannel({ guildId }) {
   }
 }
 
-module.exports = { addRepo, getRepo, removeRepo, getIssueChannel };
+module.exports = { addGuild, getRepo, removeRepo, getIssueChannel };

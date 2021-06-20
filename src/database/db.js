@@ -10,15 +10,15 @@ mongoose
   .then(() => deb("Connected to database"))
   .catch((err) => deb(err));
 
-const repoSchema = new mongoose.Schema({
-  guildId: Number,
-  repoCount: {
-    type: Number,
-    default: 0,
-  },
-  repo: [repoSchema],
-});
+// const repoSchema = new mongoose.Schema({
+//   guildId: Number,
+//   repoCount: {
+//     type: Number,
+//     default: 0,
+//   },
+//   repo: [repoSchema],
+// });
 
-const Guild = mongoose.model("Guild", repoSchema);
+const Repo = mongoose.model("Repo", repoSchema);
 
-module.exports = { Guild, deb };
+module.exports = { Repo, deb };

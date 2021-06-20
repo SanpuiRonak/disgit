@@ -32,7 +32,7 @@ async function execute(msg, args) {
       } else {
         let hadExcpetion = false;
         try {
-          await databaseApi.addRepo({
+          await databaseApi.addGuild({
             guildId: msg.guild.id,
             repoURL: api,
             channelId: msg.channel.id,
