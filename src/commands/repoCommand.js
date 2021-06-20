@@ -14,7 +14,7 @@ async function execute(msg, args) {
     }
   }
   switch (args[0]) {
-    case "track":
+    case "add":
       if (args.length <= 1) {
         msg.reply("Link Pliz 😶");
         break;
