@@ -41,7 +41,7 @@ client.once("ready", () => {
   logAct(`Logged in as ${client.user.tag}!`);
 });
 
-setInterval(eventHandler.getIssues, 5000);
+// setInterval(eventHandler.getIssues, 5000);
 
 function sendEmbed(exampleEmbed) {
   console.log("msg pathachi");
