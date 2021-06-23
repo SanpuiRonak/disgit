@@ -7,9 +7,10 @@ async function getNewEvents(repoURL, { lastIssueTimeStamp }) {
   let i = 1;
 
   do {
-    res = await fetch(pageUrl(repoURL, i));
+    let pUrl = pageUrl(repoURL, i);
+
+    res = await fetch(pUrl);
     resJson = await res.json();
-    // console.log(resJson);
 
     issueEvents = issueEvents.concat(
       resJson.filter(
@@ -19,16 +20,21 @@ async function getNewEvents(repoURL, { lastIssueTimeStamp }) {
     );
 
     i++;
-  } while (false);
+  } while (issueEvents[issueEvents.length - 1] < lastIssueTimeStamp);
 
-  console.log(issueEvents);
+  console.log(issueEvents.length);
+  console.log(issueEvents[issueEvents.length - 1]);
 }
-getNewEvents(
-  "https://api.github.com/repos/SanpuiRonak/disgit/events?per_page=100",
-  { lastIssueTimeStamp: "2021-05-08T18:10:52Z" }
-);
+// getNewEvents(
+//   "https://api.github.com/repos/SanpuiRonak/disgit/events?per_page=100",
+//   { lastIssueTimeStamp: "2021-05-08T18:10:52Z" }
+// );
+
+getNewEvents("https://api.github.com/repos/freeCodeCamp/devdocs", {
+  lastIssueTimeStamp: "2021-05-08T18:10:53Z",
+});
 
 function pageUrl(repoURL, pageNo) {
-  return repoURL + `/events/?per_page=100&page=${pageNo}`;
+  return repoURL + `/events?per_page=100&page=${pageNo}`;
 }
 module.exports = { getNewEvents };
