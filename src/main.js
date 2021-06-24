@@ -41,12 +41,18 @@ client.once("ready", () => {
   logAct(`Logged in as ${client.user.tag}!`);
 });
 
-// setInterval(eventHandler.getIssues, 5000);
-
-function sendEmbed(exampleEmbed) {
-  console.log("msg pathachi");
-  const channel = client.channels.cache.get(dbApi.getIssueChannel());
-  channel.send(exampleEmbed);
+async function refreshEvents() {
+  const repos = await dbApi.getRepoList();
+  console.log(repos);
+  let events;
+  for (const repo of repos) {
+    events = await eventHandler.getNewEvents(repo.repoURL, {
+      lastIssueTimeStamp: "2021-06-09T05:51:20Z",
+    });
+  }
+  console.log(events.length);
 }
+
+refreshEvents();
 
 client.login(token);

@@ -1,11 +1,13 @@
+const deb = require("debug")("eventHandler.js");
 const fetch = require("node-fetch");
 
-async function getNewEvents(repoURL, { lastIssueTimeStamp }) {
+async function getNewEvents(repoURL, { lastIssueTimeStamp, lastPRTimeStamp }) {
   let res;
   let resJson;
   let issueEvents = [];
+  let PREvents = [];
   let i = 1;
-
+  let loopCondition;
   do {
     let pUrl = pageUrl(repoURL, i);
 
@@ -15,24 +17,31 @@ async function getNewEvents(repoURL, { lastIssueTimeStamp }) {
     issueEvents = issueEvents.concat(
       resJson.filter(
         (event) =>
-          event.type === "IssuesEvent" && event.created_at >= lastIssueTimeStamp
+          event.type === "IssuesEvent" && event.created_at > lastIssueTimeStamp
       )
     );
 
+    deb("pUrl:" + pUrl);
+    deb(issueEvents.length);
+    // console.log(issueEvents[issueEvents.length - 1].created_at);
+    loopCondition =
+      resJson.filter(
+        (event) =>
+          event.type === "IssuesEvent" && event.created_at <= lastIssueTimeStamp
+      ).length <= 0;
+
     i++;
-  } while (issueEvents[issueEvents.length - 1] < lastIssueTimeStamp);
+    deb(loopCondition);
+  } while (loopCondition);
 
   console.log(issueEvents.length);
-  console.log(issueEvents[issueEvents.length - 1]);
-}
-// getNewEvents(
-//   "https://api.github.com/repos/SanpuiRonak/disgit/events?per_page=100",
-//   { lastIssueTimeStamp: "2021-05-08T18:10:52Z" }
-// );
 
-getNewEvents("https://api.github.com/repos/freeCodeCamp/devdocs", {
-  lastIssueTimeStamp: "2021-05-08T18:10:53Z",
-});
+  return { issueEvents };
+}
+
+// getNewEvents("https://api.github.com/repos/freeCodeCamp/devdocs", {
+//   lastIssueTimeStamp: "2021-06-09T05:51:20Z",
+// });
 
 function pageUrl(repoURL, pageNo) {
   return repoURL + `/events?per_page=100&page=${pageNo}`;
