@@ -2,7 +2,7 @@ require("dotenv").config();
 const Discord = require("discord.js");
 const fs = require("fs");
 const dbApi = require("./database/api");
-const eventHandler = require("./eventHandler");
+// const eventHandler = require("./eventHandler");
 
 const logAct = require("debug")("Main.js Activity");
 const token = process.env.TOKEN;
@@ -41,6 +41,8 @@ client.on("message", (message) => {
 
 client.once("ready", () => {
   logAct(`Logged in as ${client.user.tag}!`);
+  const temp = client.channels.cache.get("760152956069740596");
+  temp.send(getEmbed({}));
 });
 
 async function refreshEvents() {
@@ -56,12 +58,5 @@ async function refreshEvents() {
 }
 
 // refreshEvents();
-
-async function functemp() {
-  const temp = await client.channels.cache.get(760152956069740596);
-  console.log(temp);
-}
-
-temp.send(getEmbed({}));
 
 client.login(token);

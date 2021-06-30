@@ -15,6 +15,7 @@ async function getNewEvents(repoURL, { lastIssueTimeStamp, lastPRTimeStamp }) {
     let pUrl = pageUrl(repoURL, i);
     console.log("pUrl:" + pUrl);
     res = await fetch(pUrl);
+
     resJson = await res.json();
     // console.log(resJson);
     eventsArray = eventsArray.concat(
@@ -42,7 +43,7 @@ async function getNewEvents(repoURL, { lastIssueTimeStamp, lastPRTimeStamp }) {
 }
 
 getNewEvents("https://api.github.com/repos/freeCodeCamp/devdocs", {
-  lastIssueTimeStamp: Date.parse("2021-06-20T13:12:03Z"),
+  lastIssueTimeStamp: Date.parse("2021-06-20T15:26:08Z"),
 });
 
 function pageUrl(repoURL, pageNo) {
