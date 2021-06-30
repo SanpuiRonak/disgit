@@ -7,13 +7,11 @@ const repoSchema = new mongoose.Schema({
 
   guilds: [guildSchema],
   lastIssueTimeStamp: {
-    type: String,
-    // default: moment(new Date()).format("YYYY-MM-DDTHH:mm:ss[Z]"),
+    type: Date,
     default: Date.now(),
   },
   lastPRTimeStamp: {
-    type: String,
-    // default: moment(new Date()).format("YYYY-MM-DDTHH:mm:ss[Z]"),
+    type: Date,
     default: Date.now(),
   },
 });
