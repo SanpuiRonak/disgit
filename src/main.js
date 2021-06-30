@@ -8,6 +8,8 @@ const logAct = require("debug")("Main.js Activity");
 const token = process.env.TOKEN;
 const client = new Discord.Client();
 
+const { getEmbed } = require("./embeds/issueEmbed.js");
+
 //New Colection for dyanimacally storing commands
 client.commands = new Discord.Collection();
 const prefix = ";";
@@ -53,6 +55,13 @@ async function refreshEvents() {
   console.log(events.length);
 }
 
-refreshEvents();
+// refreshEvents();
+
+async function functemp() {
+  const temp = await client.channels.cache.get(760152956069740596);
+  console.log(temp);
+}
+
+temp.send(getEmbed({}));
 
 client.login(token);
