@@ -1,31 +1,30 @@
 const Discord = require("discord.js");
 
-const { sendEmbed } = require("../main");
+// const { sendEmbed } = require("../main");
 
 function getEmbed(issueObj) {
-  const embed = new Discord.MessageEmbed()
-    .setColor("#3d803d")
-    .setTitle(`${issueObj.title}`) // COMMIT MESSAGE
-    .setURL(`${issueObj.html_url}`) // URL OF COMMIT
+  const exampleEmbed = new Discord.MessageEmbed()
+    .setColor("#0099ff")
+    .setTitle("Some title")
+    .setURL("https://discord.js.org/")
     .setAuthor(
-      `New issue! 🏳️‍🌈\n By ${issueObj.user.login} `,
-      `${issueObj.user.avatar_url}`,
-      `${issueObj.user.html_url}`
+      "Some name",
+      "https://i.imgur.com/wSTFkRM.png",
+      "https://discord.js.org"
     )
-    .setThumbnail(`${issueObj.user.avatar_url}`); // avatar url
-  // .addFields(
-  //   { name: "\u200B", value: "\u200B" },
-  //   {
-  //     name: `\nCommited By : ${issueObj.commit.author.name}`,
-  //     // value: `Commit Hash: ${args.sha}`,
-  //   },
-  //   {
-  //     name: `📅  ${args.commit.author.date.substr(0, 10)}`,
-  //     value: `⌚ ${args.commit.author.date.slice(11, 19)}`,
-  //   }
-  // );
-  // sendEmbed(exampleEmbed);
-  return embed;
+    .setDescription("Some description here")
+    .setThumbnail("https://i.imgur.com/wSTFkRM.png")
+    .addFields(
+      { name: "Regular field title", value: "Some value here" },
+      { name: "\u200B", value: "\u200B" },
+      { name: "Inline field title", value: "Some value here", inline: true },
+      { name: "Inline field title", value: "Some value here", inline: true }
+    )
+    .addField("Inline field title", "Some value here", true)
+    .setImage("https://i.imgur.com/wSTFkRM.png")
+    .setTimestamp()
+    .setFooter("Some footer text here", "https://i.imgur.com/wSTFkRM.png");
+  return exampleEmbed;
 }
 
 module.exports = { getEmbed };
