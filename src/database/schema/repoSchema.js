@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const { guildSchema } = require("./guildSchema");
-const moment = require("moment");
 
 const repoSchema = new mongoose.Schema({
   repoName: String,
