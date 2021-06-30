@@ -4,44 +4,46 @@ const fetch = require("node-fetch");
 async function getNewEvents(repoURL, { lastIssueTimeStamp, lastPRTimeStamp }) {
   let res;
   let resJson;
-  let issueEvents = [];
-  let PREvents = [];
+
+  let eventsArray = [];
+
+  let latestStamp = Math.min([lastIssueTimeStamp]);
+  console.log(latestStamp);
   let i = 1;
-  let loopCondition;
+
   do {
     let pUrl = pageUrl(repoURL, i);
-
+    console.log("pUrl:" + pUrl);
     res = await fetch(pUrl);
     resJson = await res.json();
-
-    issueEvents = issueEvents.concat(
-      resJson.filter(
-        (event) =>
-          event.type === "IssuesEvent" && event.created_at > lastIssueTimeStamp
-      )
+    // console.log(resJson);
+    eventsArray = eventsArray.concat(
+      resJson.filter((event) => Date.parse(event.created_at) > latestStamp)
     );
-
-    deb("pUrl:" + pUrl);
-    deb(issueEvents.length);
-    // console.log(issueEvents[issueEvents.length - 1].created_at);
-    loopCondition =
-      resJson.filter(
-        (event) =>
-          event.type === "IssuesEvent" && event.created_at <= lastIssueTimeStamp
-      ).length <= 0;
-
     i++;
-    deb(loopCondition);
-  } while (loopCondition);
+    console.log(eventsArray.length);
+    console.log(eventsArray[eventsArray.length - 1].created_at);
+  } while (
+    eventsArray.length > 0 &&
+    latestStamp < Date.parse(resJson[resJson.length - 1].created_at)
+  );
 
-  console.log(issueEvents.length);
+  // issueEvents = issueEvents.concat(
+  //   resJson.filter(
+  //     (event) =>
+  //       event.type === "IssuesEvent" && event.created_at > lastIssueTimeStamp
+  //   )
+  // );
 
-  return { issueEvents };
+  console.log(eventsArray.length);
+  console.log(eventsArray[eventsArray.length - 1].created_at);
+
+  return {};
 }
 
-// getNewEvents("https://api.github.com/repos/freeCodeCamp/devdocs", {
-//   lastIssueTimeStamp: "2021-06-09T05:51:20Z",
-// });
+getNewEvents("https://api.github.com/repos/freeCodeCamp/devdocs", {
+  lastIssueTimeStamp: Date.parse("2021-06-20T13:12:03Z"),
+});
 
 function pageUrl(repoURL, pageNo) {
   return repoURL + `/events?per_page=100&page=${pageNo}`;
