@@ -4,7 +4,7 @@ const fs = require("fs");
 const dbApi = require("./database/api");
 const eventHandler = require("./eventHandler");
 
-const logAct = require("debug")("Main.js Activity");
+const logAct = require("debug")("main.js: ");
 const token = process.env.TOKEN;
 const client = new Discord.Client();
 
@@ -41,27 +41,17 @@ client.on("message", (message) => {
 
 client.once("ready", () => {
   logAct(`Logged in as ${client.user.tag}!`);
+  setInterval(refreshEvents, 60000);
 });
 
 async function refreshEvents() {
   const repos = await dbApi.getRepoList();
-  console.log(repos);
-  let events;
-  for (const repo of repos) {
-    events = await eventHandler.getNewEvents(repo.repoURL, {
-      lastIssueTimeStamp: "2021-06-09T05:51:20Z",
-    });
-  }
-  console.log(events.length);
+
+  repos.forEach((repo) => {
+    eventHandler.getNewEvents(repo);
+  });
 }
 
 // refreshEvents();
-
-async function functemp() {
-  const temp = await client.channels.cache.get(760152956069740596);
-  console.log(temp);
-}
-
-temp.send(getEmbed({}));
 
 client.login(token);

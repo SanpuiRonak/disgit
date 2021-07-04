@@ -1,49 +1,62 @@
-const deb = require("debug")("eventHandler.js");
+const deb = require("debug")("eventHandler.js: ");
 const fetch = require("node-fetch");
 
-async function getNewEvents(repoURL, { lastIssueTimeStamp, lastPRTimeStamp }) {
+async function getNewEvents(repo) {
   let res;
   let resJson;
 
   let eventsArray = [];
 
-  let latestStamp = Math.min([lastIssueTimeStamp]);
-  console.log(latestStamp);
+  deb(repo.repoName);
+
+  let latestStamp = Math.min(repo.lastIssueTimeStamp);
+  deb("latest Stamp: ", latestStamp);
   let i = 1;
 
   do {
-    let pUrl = pageUrl(repoURL, i);
-    console.log("pUrl:" + pUrl);
+    let pUrl = pageUrl(repo.repoURL, i);
+    deb("pUrl:" + pUrl);
     res = await fetch(pUrl);
     resJson = await res.json();
-    // console.log(resJson);
+
     eventsArray = eventsArray.concat(
       resJson.filter((event) => Date.parse(event.created_at) > latestStamp)
     );
     i++;
-    console.log(eventsArray.length);
-    console.log(eventsArray[eventsArray.length - 1].created_at);
+    deb("eventArray length: " + eventsArray.length);
   } while (
     eventsArray.length > 0 &&
     latestStamp < Date.parse(resJson[resJson.length - 1].created_at)
   );
 
-  // issueEvents = issueEvents.concat(
-  //   resJson.filter(
-  //     (event) =>
-  //       event.type === "IssuesEvent" && event.created_at > lastIssueTimeStamp
-  //   )
-  // );
+  let openIssueEvents = eventsArray.filter(
+    (event) => event.type === "IssuesEvent" && event.payload.action === "opened"
+  );
 
-  console.log(eventsArray.length);
-  console.log(eventsArray[eventsArray.length - 1].created_at);
+  let closeIssueEvents = eventsArray.filter(
+    (event) => event.type === "IssuesEvent" && event.payload.action === "closed"
+  );
+  // console.log(openIssueEvents.length);
 
-  return {};
+  return { openIssueEvents, closeIssueEvents };
 }
 
-getNewEvents("https://api.github.com/repos/freeCodeCamp/devdocs", {
-  lastIssueTimeStamp: Date.parse("2021-06-20T13:12:03Z"),
-});
+// getNewEvents({
+//   _id: { $oid: "60df33fb899b2a1861cc4d66" },
+//   lastIssueTimeStamp: Date.parse("2021-05-08T18:10:52Z"),
+//   lastPRTimeStamp: Date.parse("2021-07-02T15:42:06.683Z"),
+//   repoName: "SanpuiRonak/tictactoe-react",
+//   repoURL: "https://api.github.com/repos/SanpuiRonak/disgit",
+//   guilds: [
+//     {
+//       _id: { $oid: "60df33fb899b2a1861cc4d67" },
+//       guildID: "760152955608891433",
+//       issueChannelID: "760152956069740596",
+//       PRChannelID: "760152956069740596",
+//     },
+//   ],
+//   __v: 0,
+// });
 
 function pageUrl(repoURL, pageNo) {
   return repoURL + `/events?per_page=100&page=${pageNo}`;

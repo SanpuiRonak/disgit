@@ -1,6 +1,6 @@
 require("dotenv").config();
 const mongoose = require("mongoose");
-const deb = require("debug")("Database Log");
+const deb = require("debug")("db.js: ");
 const { repoSchema } = require("./schema/repoSchema");
 const connectionString = process.env.MONGO_STRING;
 // deb(connectionString);
