@@ -1,6 +1,9 @@
 const deb = require("debug")("eventHandler.js: ");
 const fetch = require("node-fetch");
 
+let openIssueEvents = [];
+let closeIssueEvents = [];
+
 async function getNewEvents(repo) {
   let res;
   let resJson;
@@ -30,16 +33,15 @@ async function getNewEvents(repo) {
     latestStamp < Date.parse(resJson[resJson.length - 1].created_at)
   );
 
-  let openIssueEvents = eventsArray.filter(
+  openIssueEvents = eventsArray.filter(
     (event) => event.type === "IssuesEvent" && event.payload.action === "opened"
   );
 
-  let closeIssueEvents = eventsArray.filter(
+  closeIssueEvents = eventsArray.filter(
     (event) => event.type === "IssuesEvent" && event.payload.action === "closed"
   );
   // console.log(openIssueEvents.length);
 
-  return { openIssueEvents, closeIssueEvents };
 }
 
 
@@ -64,4 +66,4 @@ async function getNewEvents(repo) {
 function pageUrl(repoURL, pageNo) {
   return repoURL + `/events?per_page=100&page=${pageNo}`;
 }
-module.exports = { getNewEvents };
+module.exports = { getNewEvents, openIssueEvents, closeIssueEvents };

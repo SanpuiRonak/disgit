@@ -1,6 +1,7 @@
 const Discord = require("discord.js");
 
-function getEmbed(issueObj) {
+function getEmbed(issueObjArr) {
+  issueObjArr.length === 0
   let body;
   if (issueObj.payload.issue.body.length > 100) {
     body = issueObj.payload.issue.body.substring(0, 100) + "...";
