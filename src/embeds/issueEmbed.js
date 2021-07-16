@@ -16,7 +16,8 @@ function getEmbed(issueObj) {
       issueObj.repo.name,
       "",
       "https://github.com/" + issueObj.repo.name
-    )
+    ).addFields(
+      { name: 'Issue Opened!', value: '\u200B' })
     .setDescription(body)
     // .setThumbnail("https://opengraph.githubassets.com/13e8e9da3d59baf06e01f5937109ed0b447faec0e5f6158735719cd50099ccbf/freeCodeCamp/devdocs")
     .setThumbnail(issueObj.payload.issue.user.avatar_url)
