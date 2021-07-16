@@ -17,6 +17,7 @@ async function getNewEvents(repo) {
     let pUrl = pageUrl(repo.repoURL, i);
     deb("pUrl:" + pUrl);
     res = await fetch(pUrl);
+
     resJson = await res.json();
 
     eventsArray = eventsArray.concat(
@@ -41,6 +42,7 @@ async function getNewEvents(repo) {
   return { openIssueEvents, closeIssueEvents };
 }
 
+
 // getNewEvents({
 //   _id: { $oid: "60df33fb899b2a1861cc4d66" },
 //   lastIssueTimeStamp: Date.parse("2021-05-08T18:10:52Z"),
@@ -57,6 +59,7 @@ async function getNewEvents(repo) {
 //   ],
 //   __v: 0,
 // });
+
 
 function pageUrl(repoURL, pageNo) {
   return repoURL + `/events?per_page=100&page=${pageNo}`;
