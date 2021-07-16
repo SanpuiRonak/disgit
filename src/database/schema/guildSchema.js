@@ -1,9 +1,9 @@
 const mongoose = require("mongoose");
 
 const guildSchema = new mongoose.Schema({
-    guildID:Number,            //guildID= Discord ServerID
-    issueChannelID:Number,        //Discord server's channel ID
-    PRChannelID:Number
-  });
-  
-  module.exports = { guildSchema };
+  guildID: String, //guildID= Discord ServerID
+  issueChannelID: String, //Discord server's channel ID
+  PRChannelID: String,
+});
+
+module.exports = { guildSchema };
