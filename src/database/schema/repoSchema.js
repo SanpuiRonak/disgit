@@ -6,11 +6,8 @@ const repoSchema = new mongoose.Schema({
   repoURL: String,
 
   guilds: [guildSchema],
-  lastIssueTimeStamp: {
-    type: Date,
-    default: Date.now(),
-  },
-  lastPRTimeStamp: {
+
+  lastTimeStamp: {
     type: Date,
     default: Date.now(),
   },
