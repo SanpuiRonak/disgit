@@ -1,8 +1,21 @@
 const Discord = require("discord.js");
 
 function getEmbed(issueObjArr) {
-  issueObjArr.length === 0
+  const issueObj = issueObjArr[0];
+  let msg;
+  if (issueObj.payload.action === "closed") {
+    msg = "Issue closed!";
+  }
+  else {
+    msg = "Issue opened!";
+  }
+
+  if (issueObjArr.length > 1) {
+    msg += " " + issueObjArr.length - 1 + " others";
+  }
+
   let body;
+
   if (issueObj.payload.issue.body.length > 100) {
     body = issueObj.payload.issue.body.substring(0, 100) + "...";
   }
@@ -19,6 +32,8 @@ function getEmbed(issueObjArr) {
       "https://github.com/" + issueObj.repo.name
     )
     .setDescription(body)
+    .addFields(
+      { name: 'Issue Opened!', value: '\u200B' })
     // .setThumbnail("https://opengraph.githubassets.com/13e8e9da3d59baf06e01f5937109ed0b447faec0e5f6158735719cd50099ccbf/freeCodeCamp/devdocs")
     .setThumbnail(issueObj.payload.issue.user.avatar_url)
     .setTimestamp()

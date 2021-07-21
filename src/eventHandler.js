@@ -13,7 +13,9 @@ async function getNewEvents(repo) {
   deb(repo.repoName);
 
   let minStamp = repo.lastTimeStamp;
-  deb("latest Stamp: ", minStamp);
+
+  deb("minStamp: ", minStamp);
+
   let i = 1;
 
   do {
@@ -27,18 +29,16 @@ async function getNewEvents(repo) {
       resJson.filter((event) => Date.parse(event.created_at) > minStamp)
     );
     i++;
-    deb("eventArray length: " + eventsArray.length);
+    // deb("eventArray length: " + eventsArray.length);
+    // deb("i: ", i);
+    // deb(minStamp < Date.parse(resJson[resJson.length - 1].created_at));
   } while (
     eventsArray.length > 0 &&
     minStamp < Date.parse(resJson[resJson.length - 1].created_at)
   );
 
-  let openIssueEvents = eventsArray.filter(
-    (event) => event.type === "IssuesEvent" && event.payload.action === "opened"
-  );
-
-  let closeIssueEvents = eventsArray.filter(
-    (event) => event.type === "IssuesEvent" && event.payload.action === "closed"
+  let issueEvents = eventsArray.filter(
+    (event) => event.type === "IssuesEvent"
   );
   // console.log(openIssueEvents.length);
 
@@ -49,9 +49,9 @@ async function getNewEvents(repo) {
   else {
     lastestStamp = null;
   }
-  console.log(eventsArray);
+  // console.log(eventsArray[eventsArray.length - 1]);
 
-  return { openIssueEvents, closeIssueEvents, lastestStamp };
+  return { issueEvents: issueEvents, lastestStamp: lastestStamp, eventsArray: eventsArray };
 
 }
 

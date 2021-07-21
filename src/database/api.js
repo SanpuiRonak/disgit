@@ -96,4 +96,9 @@ async function getRepo(repoURL) {
   }
 }
 
-module.exports = { addGuild, getRepo, getRepoList, removeGuild };
+async function setLastTime(repoURL, lastTimeStamp) {
+  let res = await Repo.updateOne({ repoURL: repoURL }, { lastTimeStamp: lastTimeStamp });
+  deb("update done: ", lastTimeStamp);
+}
+
+module.exports = { addGuild, getRepo, getRepoList, removeGuild, setLastTime };

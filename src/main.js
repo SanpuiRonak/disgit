@@ -2,9 +2,9 @@ require("dotenv").config();
 const Discord = require("discord.js");
 const fs = require("fs");
 const dbApi = require("./database/api");
-// const eventHandler = require("./eventHandler");
+const eventHandler = require("./eventHandler");
 
-const logAct = require("debug")("main.js: ");
+const deb = require("debug")("main.js: ");
 const token = process.env.TOKEN;
 const client = new Discord.Client();
 
@@ -40,13 +40,13 @@ client.on("message", (message) => {
 });
 
 client.once("ready", () => {
-  logAct(`Logged in as ${client.user.tag}!`);
+  deb(`Logged in as ${client.user.tag}!`);
 
-  const temp = client.channels.cache.get("760152956069740596");
+  // const temp = client.channels.cache.get("760152956069740596");
 
   // let { openIssueEvents, closeIssueEvents 
 
-  setInterval(refreshEvents, 60000);
+  setInterval(refreshEvents, 30000);
 
 });
 
@@ -55,9 +55,23 @@ async function refreshEvents() {
 
 
   repos.forEach((repo) => {
-    await eventHandler.getNewEvents(repo);
+    deb("ok");
+    eventHandler.getNewEvents(repo).then((res) => {
+      if (res.eventsArray.length > 0) {
 
-    getEmbed(eventHandler.opneIssueEvents);
+        deb("updating stamp: ", res.eventsArray[0].created_at);
+        deb("Event Array Length: ", res.eventsArray.length);
+        deb("Issues Array Length: ", res.issueEvents.length);
+
+        dbApi.setLastTime(repo.repoURL, res.eventsArray[0].created_at);
+        if (res.issueEvents.length > 0) {
+          const openIssueEmbed = getEmbed(res.issueEvents);
+          repo.guilds.forEach(guild => {
+            client.channels.cache.get(guild.issueChannelID).send(openIssueEmbed);
+          })
+        }
+      }
+    });
   });
 }
 
