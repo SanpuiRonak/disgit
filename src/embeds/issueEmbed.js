@@ -9,9 +9,11 @@ function getEmbed(issueObjArr) {
   else {
     msg = "Issue opened!";
   }
-
-  if (issueObjArr.length > 1) {
-    msg += " " + issueObjArr.length - 1 + " others";
+  if (issueObjArr.length == 2) {
+    msg += " + " + issueObjArr.length - 1 + "other";
+  }
+  else if (issueObjArr.length > 1) {
+    msg += " + " + issueObjArr.length - 1 + "others";
   }
 
   let body;
@@ -33,7 +35,7 @@ function getEmbed(issueObjArr) {
     )
     .setDescription(body)
     .addFields(
-      { name: 'Issue Opened!', value: '\u200B' })
+      { name: msg, value: '\u200B' })
     // .setThumbnail("https://opengraph.githubassets.com/13e8e9da3d59baf06e01f5937109ed0b447faec0e5f6158735719cd50099ccbf/freeCodeCamp/devdocs")
     .setThumbnail(issueObj.payload.issue.user.avatar_url)
     .setTimestamp()
